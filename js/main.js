@@ -5,6 +5,16 @@
   var eltResult = document.getElementById("result");
   var eltResultPane = document.getElementById("result_pane");
 
+  // list of sounds
+  var audioElement_loser = document.createElement('audio');
+  audioElement_loser.setAttribute('src', './son/loser.wav');
+  
+  var audioElement_winner = document.createElement('audio');
+  audioElement_winner.setAttribute('src', './son/winner.wav');
+	
+  var audioElement_eat = document.createElement('audio');
+  audioElement_eat.setAttribute('src', './son/eat.wav');
+
   const PLAYER_SPEED = 0.3;
   const PIRANHA_SPEED = 0.2;
   var collisionMargin = 3;
@@ -176,8 +186,10 @@
       var text;
       if (isVictory) {
         text = "Victoria, my sombrero!";
+        audioElement_winner.play();
       } else {
         text = "Game over, my sombrero! :(";
+        audioElement_loser.play();
       }
       eltResult.textContent = text;
       var restart = function restart() {
@@ -239,6 +251,24 @@
     // Handle movement
     state.me.x += state.delta.x * player_multiply;
     state.me.y += state.delta.y * piranha_multiply;
+    
+    //correction of the problems with the size of the image
+          if(state.me.x>(eltMain.clientWidth-32)){
+		        state.me.x=(eltMain.clientWidth-32);
+			    }
+			
+	    	  if(state.me.y>(eltMain.clientHeight-32)){
+            state.me.y=(eltMain.clientHeight-32);
+			    }
+		
+			    	if(state.me.y<0){	
+		          state.me.y=0;
+		      	}	
+			
+				    	if(state.me.x<0){
+	            state.me.x=0;
+		      	}
+      
     state.me.update();
 
     state.piranhas.forEach(function (fish) {
@@ -280,6 +310,7 @@
           fish2.die(timestamp);
           state.piranhas[i] = null;
           state.piranhas[j] = null;
+          audioElement_eat.play();
           // Will be removed at the next stage
         }
       }
