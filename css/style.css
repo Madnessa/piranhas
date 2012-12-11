@@ -5,7 +5,9 @@
     font-size: x-large;
 }
 body {
-    background-color: black
+    background-color: black;
+    margin:0px;
+    padding:0px;
 }
 #main {
     background-color: black;
